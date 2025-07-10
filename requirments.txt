@@ -1,0 +1,5 @@
+python3 -m venv venv
+source venv/bin/activate
+pip install python-telegram-bot sqlalchemy python-dotenv apscheduler
+pip freeze > requirements.txt
+cd
