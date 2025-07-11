@@ -1,13 +1,28 @@
-# в самом верху bot.py и models.py
+
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
-load_dotenv()
+# 1) Базовая директория проекта — там, где лежит bot.py
+BASE_DIR = Path(__file__).resolve().parent
+
+# 2) Если файл .env есть в корне — берём его
+dotenv_path = BASE_DIR / ".env"
+
+# 3) Иначе, если запущены из виртуального окружения, и там есть .env — берём его
+venv_dir = os.getenv("VIRTUAL_ENV")
+if not dotenv_path.exists() and venv_dir:
+    candidate = Path(venv_dir) / ".env"
+    if candidate.exists():
+        dotenv_path = candidate
+
+# 4) Загружаем
+load_dotenv(dotenv_path=dotenv_path)
+
 TOKEN        = os.getenv("BOT_TOKEN")
 DATABASE_URL = os.getenv("DATABASE_URL")
 ADMIN_ID     = int(os.getenv("ADMIN_TELEGRAM_ID"))
 
-# bot.py
 import logging
 from datetime import datetime, date, timedelta, time, timezone
 from telegram import (
